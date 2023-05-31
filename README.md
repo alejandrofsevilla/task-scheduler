@@ -1,2 +1,2 @@
 # task-scheduler
-A Simple Task Scheduler.
+A Simple header only Task Scheduler.
