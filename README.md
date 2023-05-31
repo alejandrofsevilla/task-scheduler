@@ -1,2 +1,2 @@
 # task-scheduler
-Simple scheduler using std::async
+A Simple Task Scheduler.
