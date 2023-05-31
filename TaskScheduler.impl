@@ -1,0 +1,51 @@
+template <class F, class... Args>
+int TaskScheduler::scheduleAt(
+    const std::chrono::time_point<std::chrono::system_clock>& time, F&& func,
+    Args&&... args) {
+  static_assert(std::is_void_v<std::invoke_result_t<F, Args...>>);
+  auto taskId{m_nextTaskId++};
+  Task task{
+      taskId, false,
+      true,   std::bind(std::forward<F>(func), std::forward<Args>(args)...),
+      {},     {},
+      time};
+  std::lock_guard<std::mutex> guard{m_mutex};
+  m_tasks.insert(std::move(task));
+  return taskId;
+}
+
+template <class Rep, class Period, class F, class... Args>
+int TaskScheduler::scheduleAfter(
+    const std::chrono::duration<Rep, Period>& timeout, F&& func,
+    Args&&... args) {
+  static_assert(std::is_void_v<std::invoke_result_t<F, Args...>>);
+  auto taskId{m_nextTaskId++};
+  Task task{taskId,
+            false,
+            true,
+            std::bind(std::forward<F>(func), std::forward<Args>(args)...),
+            {},
+            std::chrono::duration_cast<std::chrono::milliseconds>(timeout),
+            std::chrono::system_clock::now() + timeout};
+  std::lock_guard<std::mutex> guard{m_mutex};
+  m_tasks.insert(std::move(task));
+  return taskId;
+}
+
+template <class Rep, class Period, class F, class... Args>
+int TaskScheduler::scheduleEvery(
+    const std::chrono::duration<Rep, Period>& period, F&& func,
+    Args&&... args) {
+  static_assert(std::is_void_v<std::invoke_result_t<F, Args...>>);
+  auto taskId{m_nextTaskId++};
+  Task task{taskId,
+            false,
+            false,
+            std::bind(std::forward<F>(func), std::forward<Args>(args)...),
+            {},
+            std::chrono::duration_cast<std::chrono::milliseconds>(period),
+            std::chrono::system_clock::now() + period};
+  std::lock_guard<std::mutex> guard{m_mutex};
+  m_tasks.insert(std::move(task));
+  return taskId;
+}
