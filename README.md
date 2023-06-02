@@ -5,12 +5,11 @@ A Simple Task Scheduler.
 - CMake 3.22.0
 ## Example
 ```cpp
+#include <TaskScheduler.hpp>
 #include <iostream>
 #include <thread>
 
-#include "TaskScheduler.hpp"
-
-\\ ...
+// ...
 
 using namespace std::chrono;
 using namespace std::chrono_literals;
@@ -29,11 +28,11 @@ auto taskId3 = ts.scheduleEvery(3s, [startTime]() {
 
 auto std::thread t{ts.run()};
 
-\\ ...
+// ...
 
 ts.cancel(taskId1);
 ts.cancel(taskId2);
 ts.cancel(taskId3),
 
-\\ ...
+// ...
 ```
