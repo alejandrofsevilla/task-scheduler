@@ -16,13 +16,13 @@ using namespace std::chrono_literals;
 
 TaskScheduler ts;
 
-auto task1Id = ts.scheduleAt(system_clock::now() + 24h, [startTime]() {
+auto task1Id = ts.scheduleAt(system_clock::now() + 24h, []() {
   std::cout << "tomorrow" << std::endl;
 });
-auto task2Id = ts.scheduleAfter(2s, [startTime]() {
+auto task2Id = ts.scheduleAfter(2s, []() {
   std::cout << "after 2sec" << std::endl;
 });
-auto task3Id = ts.scheduleEvery(3s, [startTime]() {
+auto task3Id = ts.scheduleEvery(3s, []() {
   std::cout << "every 3sec " << std::endl;
 });
 
