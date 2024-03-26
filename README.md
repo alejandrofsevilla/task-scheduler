@@ -1,7 +1,7 @@
 # Task Scheduler
 A Simple Task Scheduler.
 ## Requirements
-- C++ 17
+- C++ 17 compiler
 - CMake 3.22.0
 ## Example
 ```cpp
